@@ -4,18 +4,21 @@ from db import db
 class TaskModel(db.Model):
     __tablename__ = 'tasks'
 
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False, unique=True)
+    id     = db.Column(db.Integer, primary_key=True)
+    title  = db.Column(db.String(80), nullable=False, unique=True)
+    status = db.Column(db.String(80), nullable=False, unique=False)
 
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, title, status):
+        self.title  = title
+        self.status = status
 
     def __repr__(self):
-        return f'TaskModel(title={self.title})'
+        return f'TaskModel(title={self.title}, status={self.status})'
     
     def json(self):
         return {
-            'title':self.title,
+            'title'  : self.title,
+            'status' : self.status
         }
 
     @classmethod
@@ -25,6 +28,10 @@ class TaskModel(db.Model):
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
+    
+    @classmethod
+    def find_by_status(cls, status):
+        return cls.query.filter_by(status=status).get()
 
     @classmethod
     def find_all(cls):

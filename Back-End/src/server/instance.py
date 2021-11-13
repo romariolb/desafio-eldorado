@@ -8,7 +8,8 @@ class Server():
         self.api = Api(self.blueprint, doc='/doc', title='Task Flask API')
         self.app.register_blueprint(self.blueprint)
 
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+        # self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/desafio'
         self.app.config['PROPAGATE_EXCEPTIONS'] = True
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

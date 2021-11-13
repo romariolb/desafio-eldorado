@@ -13,7 +13,8 @@ task_schema = TaskSchema()
 task_list_schema = TaskSchema(many=True)
 
 item = task_ns.model('Task', {
-    'title': fields.String(description='Task title'),
+    'title' : fields.String(description='Task title'),
+    'status': fields.String(description='Task status', default='Pending'),
 })
 
 ITEM_NOT_FOUND = 'Task not found'
@@ -22,7 +23,7 @@ class Task(Resource):
     def get(self, id):
         task_data = TaskModel.find_by_id(id)
         if task_data:
-            return TaskSchema.dump(task_data), 200
+            return task_schema.dump(task_data), 200
         return {'message':ITEM_NOT_FOUND}, 404
     
     @task_ns.expect(item)
@@ -30,7 +31,8 @@ class Task(Resource):
         task_data = TaskModel.find_by_id(id)
         task_json = request.get_json()
 
-        task_data.title = task_json['title']
+        task_data.title  = task_json['title']
+        task_data.status = task_json['status']
 
         task_data.save_to_db()
         return task_schema.dump(task_data), 200
