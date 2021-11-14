@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.App-div {
+  text-align: center;
+  padding-top: 3%;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -21,7 +26,33 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(0, 7, 73);
+}
+
+.App-title {
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #ca7d00;
+}
+
+.App-table {
+  background-color: #ca7d00;
+  font-weight: bold;
+  color: rgb(0, 7, 73);
+}
+
+.App-input {
+  background-color: #ffffff;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.App-button {
+  text-align: end;
+  text-align: right;
+  font-weight: bold;
 }
 
 .App-link {
