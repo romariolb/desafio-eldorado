@@ -32,10 +32,6 @@ function Form(props) {
             if (response.ok) {
                 console.log('response ok');
                 props.onAddItem(task);
-                setTask({
-                    title : '', 
-                    status : 'Pending'
-                });
             } 
 
             setTask({

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,11 +7,130 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+
 // import DeleteIcon from '@mui/material-ui/icons/Delete';
 
 function Tables(props) {
+    const [task, setTask] = useState({
+        id : 0,
+        title : '', 
+        status : ''
+    });
+
+    const [open, setOpen] = useState(false);
+    const [open_dialog, setOpenDialog] = useState(false);
+    const [open_delete, setOpenDelete] = useState(false);
+
+    function handleInputTask(event) {
+        const inputTask = {
+            id : task.id,
+            title : event.target.value, 
+            status : task.status
+        };
+        setTask(inputTask);
+    }
+
+    function handleClickOpen(row) {
+        const inputTask = {
+            id : row.id,
+            title : row.title, 
+            status : row.status
+        };
+        setTask(inputTask);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+    
+    const handleCloseDelete = () => {
+        setOpenDelete(false);
+    };
+
+    function handleClickStatus(row) {
+        const statusTask = {
+            id : row.id,
+            title : row.title, 
+            status : row.status === "Pending" ? "Done" : "Pending"
+        };
+        setTask(statusTask);
+        setOpenDialog(true);
+    };
+    
+    function handleClickDelete(row) {
+        const deleteTask = {
+            id : row.id,
+            title : row.title, 
+            status : row.status
+        };
+        setTask(deleteTask);
+        setOpenDelete(true);
+    };
+
+    async function addItem(event) {
+        event.preventDefault();
+
+        if (task) {
+            const response = await fetch(`/api/tasks/${task.id}`, {
+                method : 'PUT',
+                headers : {
+                    'Content-type' : 'application/json'
+                },
+                body : JSON.stringify(task)
+            })
+
+            if (response.ok) {
+                console.log('response ok');
+                window.location.reload();
+                setOpen(false);
+            } 
+
+            setTask({
+                id : 0,
+                title : '', 
+                status : 'Pending'
+            });
+        }
+    }
+
+    async function deleteItem(event) {
+        event.preventDefault();
+
+        if (task) {
+            const response = await fetch(`/api/tasks/${task.id}`, {
+                method : 'DELETE',
+                headers : {
+                    'Content-type' : 'application/json'
+                },
+                body : JSON.stringify(task)
+            })
+
+            if (response.ok) {
+                console.log('response ok');
+                window.location.reload();
+                setOpen(false);
+            } 
+
+            setTask({
+                id : 0,
+                title : '', 
+                status : 'Pending'
+            });
+        }
+    }
+
     const headCells = [
         {
           id: 'Title',
@@ -32,6 +151,7 @@ function Tables(props) {
           label: 'Actions',
         },
       ];
+    
     return (
         <div className="App-div">
             <TableContainer component={Paper}>
@@ -41,7 +161,7 @@ function Tables(props) {
                             {headCells.map((headCell) => (
                                 <TableCell
                                     key={headCell.id}
-                                    align={headCell.numeric ? 'right' : 'left'}
+                                    align={headCell.numeric ? 'center' : 'left'}
                                     padding={headCell.disablePadding ? 'none' : 'normal'}
                                 >
                                     {headCell.label}
@@ -58,20 +178,62 @@ function Tables(props) {
                                 <TableCell component="th" scope="row">
                                     {row.title}
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">
                                     <Chip label={row.status} color={row.status === 'Done' ? 'success' : 'error'} />
                                 </TableCell>
-                                <TableCell align="right">
-                                <IconButton aria-label="delete">
-                                    {/* <DeleteIcon /> */}
-                                    Text
-                                </IconButton>
+                                <TableCell align="center">
+                                    <Button variant="outlined" onClick={() => handleClickOpen(row)}>
+                                        Edit
+                                    </Button>
+                                    <Button variant="outlined" onClick={() => handleClickStatus(row)}>
+                                        {(() => {
+                                            switch (row.status) {
+                                            case "Pending":   return "Done";
+                                            case "Done": return "Undone";
+                                            default:      return "Done";
+                                            }
+                                        })()}
+                                    </Button>
+                                    <Button variant="outlined" onClick={() => handleClickDelete(row)}>
+                                        Delete
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Editing Task</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        onChange={handleInputTask}
+                        value={task.title}
+                        fullWidth
+                        variant="standard"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={addItem}>Save</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={open_dialog} onClose={handleCloseDialog}>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    <Button onClick={addItem}>Yes</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={open_delete} onClose={handleCloseDelete}>
+                <DialogTitle>Do you really want to delete this task?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseDelete}>Cancel</Button>
+                    <Button onClick={deleteItem}>Yes</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
