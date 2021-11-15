@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import api from "../../server/instance";
 
 function Form(props) {
     const [task, setTask] = useState({
@@ -21,18 +22,9 @@ function Form(props) {
         event.preventDefault();
     
         if (task) {
-            const response = await fetch('/api/tasks', {
-                method : 'POST',
-                headers : {
-                    'Content-type' : 'application/json'
-                },
-                body : JSON.stringify(task)
-            })
-
-            if (response.ok) {
-                console.log('response ok');
+            api.post("/tasks", task).then((response) => {
                 props.onAddItem(task);
-            } 
+            });
 
             setTask({
                 title : '', 
@@ -60,8 +52,6 @@ function Form(props) {
             >
                 <Button variant="contained" color="success" onClick={addItem}>Add</Button>
             </Box>
-            {/* <input type="text" placeholder="Add a new Task" onChange={handleInputTask} value={task.title}/> */}
-            {/* <button type="submit"  onClick={addItem}>Add</button> */}
         </form>
     )
 }

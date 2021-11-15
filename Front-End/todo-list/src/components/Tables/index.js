@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import api from "../../server/instance";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,8 +15,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 
-// import DeleteIcon from '@mui/material-ui/icons/Delete';
+import DeleteForever from '@material-ui/icons/DeleteForever';
+import Edit from '@material-ui/icons/Edit';
+import Done from '@material-ui/icons/Done';
+import Undo from '@material-ui/icons/Undo';
+import { Tooltip } from "@mui/material";
 
 function Tables(props) {
     const [task, setTask] = useState({
@@ -83,18 +89,12 @@ function Tables(props) {
         event.preventDefault();
 
         if (task) {
-            const response = await fetch(`/api/tasks/${task.id}`, {
-                method : 'PUT',
-                headers : {
-                    'Content-type' : 'application/json'
-                },
-                body : JSON.stringify(task)
-            })
-
-            if (response.ok) {
-                console.log('response ok');
+            const response = await api.put(`/tasks/${task.id}`, task);
+                    
+            if (response) {
                 window.location.reload();
                 setOpen(false);
+                console.log('response ok');
             } 
 
             setTask({
@@ -109,16 +109,9 @@ function Tables(props) {
         event.preventDefault();
 
         if (task) {
-            const response = await fetch(`/api/tasks/${task.id}`, {
-                method : 'DELETE',
-                headers : {
-                    'Content-type' : 'application/json'
-                },
-                body : JSON.stringify(task)
-            })
+            const response = await api.delete(`/tasks/${task.id}`, task);
 
-            if (response.ok) {
-                console.log('response ok');
+            if (response) {
                 window.location.reload();
                 setOpen(false);
             } 
@@ -182,21 +175,27 @@ function Tables(props) {
                                     <Chip label={row.status} color={row.status === 'Done' ? 'success' : 'error'} />
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button variant="outlined" onClick={() => handleClickOpen(row)}>
-                                        Edit
-                                    </Button>
-                                    <Button variant="outlined" onClick={() => handleClickStatus(row)}>
-                                        {(() => {
-                                            switch (row.status) {
-                                            case "Pending":   return "Done";
-                                            case "Done": return "Undone";
-                                            default:      return "Done";
-                                            }
-                                        })()}
-                                    </Button>
-                                    <Button variant="outlined" onClick={() => handleClickDelete(row)}>
-                                        Delete
-                                    </Button>
+                                    <Tooltip title="Edit this Task">
+                                        <IconButton aria-label="edit" onClick={() => handleClickOpen(row)}>
+                                            <Edit />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title={row.status === "Done" ? "Undone Task" : "Done Task"}>
+                                        <IconButton aria-label="status" onClick={() => handleClickStatus(row)}>
+                                            {(() => {
+                                                switch (row.status) {
+                                                case "Pending":   return <Done />;
+                                                case "Done": return <Undo />;
+                                                default:      return <Undo />;
+                                                }
+                                            })()}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                        <IconButton aria-label="delete" onClick={() => handleClickDelete(row)}>
+                                            <DeleteForever />
+                                        </IconButton>
+                                    </Tooltip>
                                 </TableCell>
                             </TableRow>
                         ))}
