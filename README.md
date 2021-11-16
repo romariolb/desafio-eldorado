@@ -92,7 +92,8 @@ Altere o seguinte atributo:
 self.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/desafio'
 ```
 
-Caso tenha interesse, existe um script de criação da base de dados em /database, basta executar:
+Caso tenha interesse, existe um script de criação da base de dados em /database/create_db.py, basta editar as linhas 9 e 10 
+colocando seu usuário e senha do banco de dados e executar:
 
 ```bash
 $ py /database/create_db.py
