@@ -17,6 +17,8 @@
 [![Flask-Restx](https://img.shields.io/badge/flask--restx-0.5.1-blue)](https://flask-restx.readthedocs.io/en/latest/)
 [![Flask-SQLAlchemy](https://img.shields.io/badge/flask--sqlalchemy-2.x-blue)](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 [![Flask](https://img.shields.io/badge/flask-2.0.x-blue)](https://flask.palletsprojects.com/en/2.0.x/)
+[![MySQL-Connector-Python](https://img.shields.io/badge/mysql--connector--python-8.0.27-blue)](https://pypi.org/project/mysql-connector-python/)
+[![PyMySQL](https://img.shields.io/badge/pymysql-1.0.2-blue)](https://pypi.org/project/PyMySQL/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 
@@ -32,7 +34,6 @@
 
 - [Sobre](#about)
 - [Getting Started](#getting_started)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 
 ## 🧐 Sobre <a name = "about"></a>
@@ -68,7 +69,6 @@ Acesse a venv disponível:
 
 ```bash
 $ source /env/Scripts/activate
-$ php artisan key:generate
 ```
 
 Uma lista completa dos requisitos para execução dessa aplicação está disponível no arquivo
