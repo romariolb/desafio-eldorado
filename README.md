@@ -54,9 +54,12 @@ Instruções para ter uma cópia do repositório.
 
 - Clone
 
+O repositório onde se encontra o código fonte da aplicação está na branch **master**. Logo:
+
 ```bash
 $ git clone https://github.com/romariolb/desafio-eldorado.git
 $ cd desafio-eldorado
+$ git checkout master
 ```
 
 -   **Back-end**
