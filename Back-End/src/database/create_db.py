@@ -1,5 +1,9 @@
 import mysql.connector
 
+# ------------------------------------------------------------
+# cria a base de dados
+# ------------------------------------------------------------
+
 mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",

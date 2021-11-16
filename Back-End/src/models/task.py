@@ -1,6 +1,10 @@
 from enum import unique
 from db import db
 
+# ------------------------------------------------------------
+# modelo utilizado para scripts SQL (Alchemy)
+# ------------------------------------------------------------
+
 class TaskModel(db.Model):
     __tablename__ = 'tasks'
 

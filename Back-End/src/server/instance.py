@@ -1,6 +1,10 @@
 from flask import Flask, Blueprint
 from flask_restx import Api
 
+# ------------------------------------------------------------
+# Instancia do servidor
+# ------------------------------------------------------------
+
 class Server():
     def __init__(self, ):
         self.app = Flask(__name__)

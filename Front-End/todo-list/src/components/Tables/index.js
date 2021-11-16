@@ -23,6 +23,13 @@ import Done from '@material-ui/icons/Done';
 import Undo from '@material-ui/icons/Undo';
 import { Tooltip } from "@mui/material";
 
+/**
+ * Componente com a tabela de apresentação, juntamente das ações contidas nela.
+ * Ações foram feitas via Dialog Component
+ * @param props 
+ * @returns render()
+ */
+
 function Tables(props) {
     const [task, setTask] = useState({
         id : 0,

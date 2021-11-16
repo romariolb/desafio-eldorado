@@ -6,6 +6,10 @@ from db import db
 
 from server.instance import server
 
+# ------------------------------------------------------------
+# raiz da aplicação
+# ------------------------------------------------------------
+
 api = server.api
 app = server.app
 

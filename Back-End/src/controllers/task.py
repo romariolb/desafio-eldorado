@@ -7,6 +7,7 @@ from schemas.task import TaskSchema
 
 from server.instance import server
 
+# declaracao da instancia do server
 task_ns = server.task_ns
 
 task_schema = TaskSchema()
@@ -20,6 +21,10 @@ item = task_ns.model('Task', {
 ITEM_NOT_FOUND = 'Task not found'
 
 class Task(Resource):
+    # ------------------------------------------------------------
+    # metodos padrões para a api
+    # ------------------------------------------------------------
+    @task_ns.doc('Get an Item')
     def get(self, id):
         task_data = TaskModel.find_by_id(id)
         if task_data:
@@ -27,6 +32,7 @@ class Task(Resource):
         return {'message':ITEM_NOT_FOUND}, 404
     
     @task_ns.expect(item)
+    @task_ns.doc('Update an Item')
     def put(self, id):
         task_data = TaskModel.find_by_id(id)
         task_json = request.get_json()
@@ -37,6 +43,7 @@ class Task(Resource):
         task_data.save_to_db()
         return task_schema.dump(task_data), 200
 
+    @task_ns.doc('Delete an Item')
     def delete(self, id):
         task_data = TaskModel.find_by_id(id)
         if task_data:
@@ -45,6 +52,9 @@ class Task(Resource):
         return {'message', ITEM_NOT_FOUND}, 404
 
 class TaskList(Resource):
+    # ------------------------------------------------------------
+    # metodos embutidos a listagem
+    # ------------------------------------------------------------
     def get(self):
         return task_list_schema.dump(TaskModel.find_all()), 200
     

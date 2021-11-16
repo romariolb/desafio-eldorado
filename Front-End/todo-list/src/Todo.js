@@ -5,10 +5,10 @@ import Tables from './components/Tables';
 import './App.css';
 import api from './server/instance';
 
-// const api = axios.create({
-//     baseURL: "/api"
-// });
-
+/**
+ * Componente principal de renderização
+ * @returns Todo()
+ */
 function Todo() {
     GetTasks();
 

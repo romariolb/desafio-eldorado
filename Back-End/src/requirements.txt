@@ -22,3 +22,5 @@ mysql-connector-python
 mysql-connector-python-rf
 pymysql
 cryptography
+pytest
+pytest-flask
